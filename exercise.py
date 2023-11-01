@@ -2,65 +2,47 @@ import re
 
 class Book:
     def __init__(self, title: str, author: str, book_id: str):
-        """
-        Initializes a new book.
-
-        :param title: The title of the book.
-        :param author: The author of the book.
-        :param book_id: The id of the book.
-        """
         self.title = title
         self.author = author
         self.book_id = book_id
 
 class Library:
     def __init__(self):
-        """
-        Initializes a new library.
-        """
         self.books = {}
 
     def add_book(self, book: Book) -> bool:
-        """
-        Adds a book to the library.
+        # Check if book_id is valid
+        if not self.validate_book_id(book.book_id):
+            return False
 
-        :param book: The book object to add.
-        :return: True if the book was added, False otherwise.
-        Ensure that the book ID is validated before attempting to remove the book
-        and hasn't already been added
-        """
-        # TODO: Implement the method
-        raise NotImplementedError("This method has not been implemented yet.")
-    
+        # Check if book_id is already in the library
+        if book.book_id in self.books:
+            return False
+        
+        # Add the book to the library
+        self.books[book.book_id] = book
+        return True
 
     def remove_book(self, book_id: str) -> bool:
-        """
-        Removes a book from the library using its id.
+        # Check if book_id is valid
+        if not self.validate_book_id(book_id):
+            return False
 
-        :param book_id: The id of the book to remove.
-        :return: True if the book was removed, False otherwise.
-        """
-        # TODO: Implement the method
-        raise NotImplementedError("This method has not been implemented yet.")
-
+        # Remove the book if it exists in the library
+        if book_id in self.books:
+            del self.books[book_id]
+            return True
+        return False
 
     def find_book(self, book_id: str) -> Book:
-        """
-        Finds a book in the library using its id.
+        # Check if book_id is valid
+        if not self.validate_book_id(book_id):
+            return None
 
-        :param book_id: The id of the book to find.
-        :return: Book object if found, None otherwise.
-        """
-        # TODO: Implement the method
-        raise NotImplementedError("This method has not been implemented yet.")
+        # Return the book if it exists in the library
+        return self.books.get(book_id, None)
 
     def validate_book_id(self, book_id: str) -> bool:
-        """
-        Validates the book's id using a regular expression.
-
-        :param book_id: The id of the book to validate.
-        :return: True if the id is valid, False otherwise.
-        """
         pattern = re.compile(r'^B\d{4}$')
         return bool(pattern.match(book_id))
 
